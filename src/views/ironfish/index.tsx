@@ -125,10 +125,6 @@ export default function ironfish() {
         </div>
         <div>
           <h2>按产出收益耗电估计</h2>
-          <p>
-            每日电费：{(consumption * 24) / 1000} * {electricityPrice} ={" "}
-            {((consumption * 24) / 1000) * electricityPrice} RMB
-          </p>
           <p>币本位每日产出：{Number(dailyOutput).toFixed(2)} IRON</p>
           <p>
             每日收益：{Number(dailyOutput).toFixed(2)} * {Number(tokenPrice).toFixed(2)} ={" "}
