@@ -7,8 +7,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/ironfish" element={<Ironfish />} />
-          <Route path="*" element={<Ironfish />} />
+          <Route path="/" element={<Ironfish />} />
         </Routes>
       </BrowserRouter>
     </>
