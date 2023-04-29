@@ -5,11 +5,7 @@ import Ironfish from "./views/ironfish";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Ironfish />} />
-        </Routes>
-      </BrowserRouter>
+      <Ironfish />
     </>
   );
 }
