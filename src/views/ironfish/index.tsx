@@ -1,14 +1,14 @@
 import React from "react";
 import "./index.scss";
-function getDifficultyTarget(lastStats) {
+function getDifficultyTarget(lastStats: any) {
   return lastStats.config.avgDifficultyTargetEnabled
     ? lastStats.network.difficultyTarget || lastStats.config.coinDifficultyTarget
     : lastStats.config.coinDifficultyTarget;
 }
 const useGetStats = () => {
-  const [heroStats, setHeroStats] = React.useState({ globalPower: 0 });
+  const [heroStats, setHeroStats] = React.useState({ globalPower: 0, difficulty: 0, globalPower_gh: 0, tokenPrice: 0 });
   const [count, setCount] = React.useState(0);
-  React.useState(async () => {
+  React.useEffect(() => {
     const fetchHero = async () => {
       const heroMinersStatsResponse = await fetch("https://ironfish.herominers.com/api/stats");
       const heroMinersStatsResponseData = await heroMinersStatsResponse.json();
@@ -50,19 +50,19 @@ export default function ironfish() {
           <br />
           <span>
             算力<span>（大概值）</span>：
-            <input value={power} onChange={(e) => setPower(e.target.value)} /> GH/S
+            <input value={power} onChange={(e) => setPower(parseFloat(e.target.value))} /> GH/S
           </span>
           <br />
           <span>
             功耗<span>（大概值）</span>：
-            <input value={consumption} onChange={(e) => setConsumption(e.target.value)} />w
+            <input value={consumption} onChange={(e) => setConsumption(parseFloat(e.target.value))} />w
           </span>
           <br />
           <span>一天耗电度数：{(consumption * 24) / 1000} 度</span>
         </p>
         <p>
           电价：
-          <input value={electricityPrice} onChange={(e) => setElectricityPrice(e.target.value)} />
+          <input value={electricityPrice} onChange={(e) => setElectricityPrice(parseFloat(e.target.value))} />
           <span>（人民币）</span>
         </p>
       </article>
@@ -85,39 +85,23 @@ export default function ironfish() {
           <p>总算力耗电费用估计：</p>
           <span>
             {Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2)} * {electricityPrice} ={" "}
-            {parseFloat(
-              Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2) * electricityPrice
-            ).toFixed(2)}{" "}
-            RMB ={" "}
-            {parseFloat(
-              (Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2) * electricityPrice) / 6.8
-            ).toFixed(2)}{" "}
-            USD
+            {Number((((globalPower_gh / power) * (consumption * 24)) / 1000) * electricityPrice).toFixed(2)} RMB ={" "}
+            {Number(((((globalPower_gh / power) * (consumption * 24)) / 1000) * electricityPrice) / 6.8).toFixed(2)} USD
           </span>
           <p>每天恒定产出2.88w个币</p>
           <span>
-            {parseFloat(
-              (Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2) * electricityPrice) / 6.8
-            ).toFixed(2)}{" "}
-            / 28800 = 每个币{" "}
-            {parseFloat(
-              parseFloat(
-                Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2) * electricityPrice
-              ).toFixed(2) /
-                6.8 /
-                28800
+            {Number(((((globalPower_gh / power) * (consumption * 24)) / 1000) * electricityPrice) / 6.8).toFixed(2)} /
+            28800 = 每个币{" "}
+            {Number(
+              ((((globalPower_gh / power) * (consumption * 24)) / 1000) * electricityPrice) / 6.8 / 28800
             ).toFixed(2)}{" "}
             美元
           </span>
           <section>
             每个币产出成本{" "}
             <span>
-              {parseFloat(
-                parseFloat(
-                  Number(((globalPower_gh / power) * (consumption * 24)) / 1000).toFixed(2) * electricityPrice
-                ).toFixed(2) /
-                  6.8 /
-                  28800
+              {Number(
+                ((((globalPower_gh / power) * (consumption * 24)) / 1000) * electricityPrice) / 6.8 / 28800
               ).toFixed(2)}
             </span>{" "}
             USD
